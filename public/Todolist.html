@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <input type="text" id="inp" value="Go out for peace!" onkeyup="checkEnter(event)" placeholder="Enter todo here" />
+    <input type="text" id="inp" value="Go out for peace!" onkeydown="checkEnter(event)" placeholder="Enter todo here" />
     <button onclick="addTodo()">Add Todo</button><br><br>
     <input type="text" id="sinp" onkeydown="searchRes(event)" onchange="searchRes(event)" placeholder="Search todo here" />
     <ul id="td-ul">

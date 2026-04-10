@@ -55,6 +55,10 @@ app.post("/todos/deltodo",(req,res)=>{
     todos.splice(req.body.idx,1);
     res.send(todos);
 })
+app.post("/todos/searchtodo",(req,res)=>{
+    let searchResults=todos.filter((todo)=>(todo.toLowerCase().startsWith(req.body.sdata.toLowerCase()) || !(req.body.sdata)))
+    res.send(searchResults)
+})
 
 app.listen(3600, (() => { console.log("server is runningg.......") }))
 

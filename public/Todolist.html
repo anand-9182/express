@@ -1,57 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <input type="text" id="inp" value="Go out for peace!"/>
-    <button onclick="addTodo()">Add Todo</button>
+    <input type="text" id="inp" value="Go out for peace!" onkeyup="checkEnter(event)" placeholder="Enter todo here" />
+    <button onclick="addTodo()">Add Todo</button><br><br>
+    <input type="text" id="sinp" onkeydown="searchRes(event)" onchange="searchRes(event)" placeholder="Search todo here" />
     <ul id="td-ul">
 
     </ul>
     <script>
-        function getTodos()
-        {
+        function getTodos() {
             fetch("http://localhost:3600/todos")
-            .then(res=>res.json())
-            .then(data=>genTodos(data))
+                .then(res => res.json())
+                .then(data => genTodos(data))
         }
-        function genTodos(todos)
-        {
-            let ul=document.getElementById("td-ul");
-            ul.innerHTML=""
-            todos.forEach((todo,i)=>{
-                ul.innerHTML+=`<li>${todo}<button onclick="delTodo(${i})">Delete</button></li>`;
+        function genTodos(todos) {
+            let ul = document.getElementById("td-ul");
+            ul.innerHTML = ""
+            todos.forEach((todo, i) => {
+                ul.innerHTML += `<li>${todo}<button onclick="delTodo(${i})">Delete</button></li>`;
             })
         }
-        function addTodo()
-        {
-            let data=document.getElementById("inp").value;
-            fetch("http://localhost:3600/todos/addtodo",{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
+        function addTodo() {
+            let data = document.getElementById("inp").value;
+            if (data) {
+                fetch("http://localhost:3600/todos/addtodo", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ data: data })
+                })
+                    .then(res => res.json())
+                    .then(data => genTodos(data))
+            }
+        }
+        function delTodo(idx) {
+            fetch("http://localhost:3600/todos/deltodo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body:JSON.stringify({data:data})
+                body: JSON.stringify({ idx })
             })
-            .then(res=>res.json())
-            .then(data=>genTodos(data))
+                .then(res => res.json())
+                .then(data => genTodos(data))
         }
-        function delTodo(idx)
-        {
-            fetch("http://localhost:3600/todos/deltodo",{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
+        function checkEnter(ev) {
+            if (ev.key == "Enter" && ev.target.value) {
+                addTodo();
+                ev.target.value = "";
+            }
+        }
+        function searchRes(ev) {
+            console.log('Key pressed')
+            fetch("http://localhost:3600/todos/searchtodo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body:JSON.stringify({idx})
+                body: JSON.stringify({ sdata:ev.target.value })
             })
-            .then(res=>res.json())
-            .then(data=>genTodos(data))
+                .then(res => res.json())
+                .then(data => genTodos(data))
         }
         getTodos();
     </script>
 </body>
+
 </html>

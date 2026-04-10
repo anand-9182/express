@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="inp" value="Go out for peace!"/>
+    <button onclick="addTodo()">Add Todo</button>
+    <ul id="td-ul">
+
+    </ul>
+    <script>
+        function getTodos()
+        {
+            fetch("http://localhost:3600/todos")
+            .then(res=>res.json())
+            .then(data=>genTodos(data))
+        }
+        function genTodos(todos)
+        {
+            let ul=document.getElementById("td-ul");
+            ul.innerHTML=""
+            todos.forEach((todo,i)=>{
+                ul.innerHTML+=`<li>${todo}<button onclick="delTodo(${i})">Delete</button></li>`;
+            })
+        }
+        function addTodo()
+        {
+            let data=document.getElementById("inp").value;
+            fetch("http://localhost:3600/todos/addtodo",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({data:data})
+            })
+            .then(res=>res.json())
+            .then(data=>genTodos(data))
+        }
+        function delTodo(idx)
+        {
+            fetch("http://localhost:3600/todos/deltodo",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({idx})
+            })
+            .then(res=>res.json())
+            .then(data=>genTodos(data))
+        }
+        getTodos();
+    </script>
+</body>
+</html>

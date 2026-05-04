@@ -30,6 +30,7 @@
         function addTodo() {
             let data = document.getElementById("inp").value;
             if (data) {
+                document.getElementById("inp").value="";
                 fetch("http://localhost:3600/todos/addtodo", {
                     method: "POST",
                     headers: {

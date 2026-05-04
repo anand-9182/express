@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h1><span id="t1">count:0</span></h1>
+    <h1>Count:<span id="t1"></span></h1>
     <button onclick="inc()">inc</button>
     <button onclick="dec()">dec</button>
     <script>
@@ -16,21 +16,21 @@
             fetch(`http://localhost:3600/getCount`)
                 .then((res) => res.json())
                 .then((data) => {
-                    document.getElementById("t1").innerHTML =("count:"+data)
+                    document.getElementById("t1").innerText =(data)
                 })
         }
         function inc() {
             fetch(`http://localhost:3600/inc`)
                 .then((res) => res.json())
                 .then((data) => {
-                    document.getElementById("t1").innerHTML =("count:"+data)
+                    document.getElementById("t1").innerText =(data)
                 })
         }
         function dec() {
             fetch(`http://localhost:3600/dec`)
                 .then((res) => res.json())
                 .then((data) => {
-                    document.getElementById("t1").innerHTML=("count:"+data)
+                    document.getElementById("t1").innerText=(data)
                 })
         }
         getCount();

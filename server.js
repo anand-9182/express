@@ -1,10 +1,17 @@
 var express = require("express")
 var bodyparser = require("body-parser")
 var app = express()
+app.use(express.static(__dirname + "/public"))
+var fs = require("fs")
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json());
-var count=0;
-var todos=["Go to iceland","Eat prawns biryani","Go for trip"]
+var count = 0;
+app.use(express.static(__dirname + "/public"))
+var tickets=[{
+    issueType
+}]
+var todos = ["Go to iceland", "Eat prawns biryani", "Go for trip"]
+var moretodos = ["watch web series", "make a trip", " buy  R15 bike"]
 app.get("/add/:x/:y", (req, res) => {
     var a = +req.params.x
     var b = +req.params.y
@@ -18,14 +25,13 @@ app.get("/sum", (req, res) => {
     console.log(req)
 })
 
-app.use(express.static(__dirname + "/public"))
 // taking input from form using get
 
-// app.get("/form", (req, res) => {
-//     var a = +req.query.a
-//     var b = +req.query.b
-//     res.send(a + b)
-// })
+app.get("/form", (req, res) => {
+    var a = +req.query.a
+    var b = +req.query.b
+    res.send(a + b)
+})
 
 // taking input from form using post
 app.post("/form", (req, res) => {
@@ -36,29 +42,64 @@ app.post("/form", (req, res) => {
 
 app.get("/inc", ((req, res) => {
     res.send(++count)
-    
+
 }))
 app.get("/dec", ((req, res) => {
     res.send(--count)
 }))
-app.get("/getCount",(req,res)=>{
+app.get("/getCount", (req, res) => {
     res.send(count)
 })
-app.get("/todos",(req,res)=>{
+app.get("/todos", (req, res) => {
     res.send(todos);
 })
-app.post("/todos/addtodo",(req,res)=>{
+app.post("/todos/addtodo", (req, res) => {
     todos.push(req.body.data)
     res.send(todos)
 })
-app.post("/todos/deltodo",(req,res)=>{
-    todos.splice(req.body.idx,1);
+app.post("/todos/deltodo", (req, res) => {
+    todos.splice(req.body.idx, 1);
     res.send(todos);
 })
-app.post("/todos/searchtodo",(req,res)=>{
-    let searchResults=todos.filter((todo)=>(todo.toLowerCase().startsWith(req.body.sdata.toLowerCase()) || !(req.body.sdata)))
+app.post("/todos/searchtodo", (req, res) => {
+    let searchResults = todos.filter((todo) => (todo.toLowerCase().includes(req.body.sdata.toLowerCase()) || !(req.body.sdata)))
     res.send(searchResults)
 })
 
-app.listen(3600, (() => { console.log("server is runningg.......") }))
+// todolist implimantation
+
+app.get("/moretodos",(req,res)=>{
+    res.send(moretodos)
+})
+
+app.post("moretodos/addtodo",(req,res)=>{
+   moretodos.push(req.body.data)
+   res.send(moretodos)
+})
+
+app.post("/moretodos/deletetodo",(req,res)=>{
+    moretodos.splice(req.body.index,1)
+    res.send(moretodos)
+})
+
+app.post("/form", (req, res) => {
+    var data=fs.readFileSync(__dirname + "/issues.txt")
+    var issues=JSON.parse(data.toString())
+    issues.push(req.body)   
+    console.log(issues)
+    console.log(req.body)
+    fs.writeFileSync(__dirname + "/issues.txt",JSON.stringify(issues))
+    res.send({msg:"push ayyindhiii"})
+})
+
+app.post("/form", (req, res) => {
+    var data = fs.readFileSync(__dirname + "compliments.txt")
+    var issues = JSON.parse(data.toString())
+    issues.push(req.body)
+    console.log(req.body)
+    fs.writeFileSync(__dirname+"/compliments.txt",JSON.stringify(issues))
+    res.send({msg:"kasta padi chesaaav gaa ayyindhi le"})
+})
+
+app.listen(3600, (() => { console.log("server is runningg on 3600.......") }))
 

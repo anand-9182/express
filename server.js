@@ -77,6 +77,10 @@ var todos = ["Go to iceland", "Eat prawns biryani", "Go for trip"]
 //     res.send(moretodos)
 // })
 
+app.get("/", (req, res) => {
+    console.log("this is the enddddddddd.....")
+})
+
 app.post("/form", (req, res) => {
     var data = fs.readFileSync(__dirname + "/issues.txt")
     var issues = JSON.parse(data.toString())

@@ -78,7 +78,7 @@ var todos = ["Go to iceland", "Eat prawns biryani", "Go for trip"]
 // })
 
 app.get("/", (req, res) => {
-    console.log("this is the enddddddddd.....")
+    res.send("this is the enddddddddd.....")
 })
 
 app.post("/form", (req, res) => {

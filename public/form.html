@@ -8,16 +8,18 @@
 </head>
 
 <body>
-    <!-- <form onsubmit="submitissue(event)"> -->
+    <form onsubmit="submitissue(event)">
         Enter the type of problem <br>
         <input type="text" id="textb1"><br>
         Enter the Remarks <br>
         <textarea type="text" id="textb2"></textarea><br>
-        <button onclick="submitissue()">Submit the issue</button>
-    <!-- </form> -->
+        <button type="submit">Submit the issue</button>
+    </form>
     <script>
-        function submitissue() {
-            // ev.preventDefault()
+        function submitissue(ev) {
+            console.log("textb1 value is :"+document.getElementById("textb1").value)
+            console.log("textb2 value is :"+document.getElementById("textb2").value)
+            ev.preventDefault()
             fetch("http://localhost:3600/form",{
                 method:"POST",
                 headers:{
@@ -29,7 +31,7 @@
                 })
             })
             .then(res=>res.json())
-            .then(data=>console.log(data))
+            .then(data=>console.log("res is :"+JSON.stringify(data)))
          
         }
     </script>

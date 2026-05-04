@@ -20,7 +20,7 @@
             console.log("textb1 value is :"+document.getElementById("textb1").value)
             console.log("textb2 value is :"+document.getElementById("textb2").value)
             ev.preventDefault()
-            fetch("http://localhost:3600/form",{
+            fetch("/form",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
